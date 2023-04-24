@@ -3,7 +3,6 @@ package com.fiona.serTrial;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
@@ -13,19 +12,22 @@ import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-//import org.json.JSONException;
-//import org.json.JSONObject;
+
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 @Configuration
-@ConfigurationProperties
+@ConfigurationProperties("app.config.auth")
 public class AppConfiguration {
      String  password;
      String username;
-    public void appCon() throws  IOException {
+
+
+
+    public  void appConn() throws IOException, JSONException {
         // Set the URL of the Vault API endpoint and the path of the secret
         String apiUrl = "http://localhost:8200/v1";
         String secretPath ="secret/data/javatodev_core_api/dev";
@@ -55,11 +57,10 @@ public class AppConfiguration {
             System.out.println("##############################################333");
             System.out.println("UserName : "+username);
             System.out.println("Password: "+password);
+            dbConnection();;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (ClientProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
 //            httpClient.close();
@@ -73,7 +74,7 @@ public class AppConfiguration {
 
         Connection conn =null ;
         try{
-            conn = DriverManager.getConnection(dbUrl, dbUserName, dbPassword);
+            conn = DriverManager.getConnection(dbUrl, username, password);
             System.out.println("successfully connected to database");
             System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=");
         }catch(SQLException e){
@@ -87,5 +88,7 @@ public class AppConfiguration {
         //close connection
         conn.close();
     }
+
+
 
 }

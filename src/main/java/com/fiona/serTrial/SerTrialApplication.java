@@ -1,5 +1,6 @@
 package com.fiona.serTrial;
 
+import org.codehaus.jettison.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -23,16 +24,18 @@ public class SerTrialApplication  {
 //	}
 public static void main(String[] args) {
 	SpringApplication.run(SerTrialApplication.class, args);
-	 AppConfiguration appConfiguration = new AppConfiguration();
-	try{
-		appConfiguration.appCon();
-		appConfiguration.dbConnection();
-	} catch (IOException e) {
-		throw new RuntimeException(e);
-	} catch (SQLException e) {
-		throw new RuntimeException(e);
-	}
-}
+// 	 AppConfiguration appConfiguration = new AppConfiguration();
+// 	try{
+// 		appConfiguration.appConn();
+// 		appConfiguration.dbConnection();
+// 	} catch (IOException e) {
+// 		throw new RuntimeException(e);
+// 	} catch (SQLException e) {
+// 		throw new RuntimeException(e);
+// 	} catch (JSONException e) {
+// 		throw new RuntimeException(e);
+// 	}
+// }
 
 
 //	@Override
@@ -44,4 +47,5 @@ public static void main(String[] args) {
 //	}
 
 
+}
 }
