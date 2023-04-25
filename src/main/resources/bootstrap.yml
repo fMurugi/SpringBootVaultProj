@@ -1,9 +1,9 @@
 spring:
   application:
-    name: techgeeknextApp
+    name: serTrial
   cloud:
     vault:
       host: localhost
-      port: 8009
+      port: 8201
       scheme: http
-      token: hvs.iFwgiVcUSbzxdtD0WpvoXEdF
+      token: hvs.Qt3X2zYu3agb6mMFak5gli4R
