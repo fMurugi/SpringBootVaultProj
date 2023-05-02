@@ -69,6 +69,19 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.yworks</groupId>
+			<artifactId>yguard</artifactId>
+			<version>4.0.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-antrun-plugin -->
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-antrun-plugin</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -96,6 +109,49 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<id>obfuscate</id>
+						<configuration>
+							<tasks>
+								<property name="runtime_classpath" refid="maven.runtime.classpath"/>
+								<taskdef name="yguard" classname="com.yworks.yguard.YGuardTask" classpath="${runtime_classpath}"/>
+								<yguard>
+									<inoutpair in="target/techfi-0.0.1-SNAPSHOT.jar" out="target/output.jar"/>
+									<property name="naming-scheme" value="best"/>
+									<rename logfile="renamelog.xml">
+										<adjust replaceContent="true">
+											<include
+													name="web.xml"/>
+										</adjust>
+										<keep>
+											<class methods="private" fields="private">
+												<patternset>
+													<include name="de/myProject/unchanged/**/*"/>
+												</patternset>
+											</class>
+											<class classes="none" methods="none" fields="none">
+												<patternset>
+													<include name="de/myProject/obfuscate/**/*"/>
+												</patternset>
+											</class>
+										</keep>
+									</rename>
+									<!-- see the yGuard task documentation for information about the <yguard> element-->
+								</yguard>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 
